@@ -3,6 +3,7 @@ package com.example.sample.controller;
 import com.example.sample.entity.Info;
 import com.example.sample.service.InfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,12 @@ public class InfoController {
     private final InfoService infoService;
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("infoList", infoService.getAllInfo());
+    public String list(@RequestParam(defaultValue = "0") int page, Model model) {
+        int size = 5; // 5개씩 페이징
+        Page<com.example.sample.entity.Info> infoPage = infoService.getInfoPage(page, size);
+        model.addAttribute("infoPage", infoPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
         return "info/list";
     }
 

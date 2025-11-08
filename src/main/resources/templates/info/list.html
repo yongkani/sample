@@ -76,29 +76,42 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="info : ${infoList}">
+            <tr th:each="info : ${infoPage.content}">
                 <td th:text="${info.id}">1</td>
                 <td>
-                    <a th:href="@{/info/{id}(id=${info.id})}" 
-                       th:text="${info.title}" 
+                    <a th:href="@{/info/{id}(id=${info.id})}"
+                       th:text="${info.title}"
                        class="action-link">제목</a>
                 </td>
                 <td th:text="${#temporals.format(info.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
                 <td>
-                    <form th:action="@{/info/{id}/delete(id=${info.id})}" 
-                          method="post" 
+                    <form th:action="@{/info/{id}/delete(id=${info.id})}"
+                          method="post"
                           style="display: inline;"
                           onsubmit="return confirm('정말 삭제하시겠습니까?');">
                         <button type="submit" class="delete-btn">삭제</button>
                     </form>
                 </td>
             </tr>
-            <tr th:if="${#lists.isEmpty(infoList)}">
+            <tr th:if="${infoPage.empty}">
                 <td colspan="4" style="text-align: center; color: #999;">
                     등록된 정보가 없습니다.
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <div th:if="${infoPage.totalPages > 1}" style="margin-top: 20px; display:flex; gap:8px; align-items:center;">
+        <a th:href="@{/info(page=${currentPage - 1})}" th:if="${!infoPage.first}" class="action-link">이전</a>
+        <span th:if="${infoPage.first}" style="color:#ccc;">이전</span>
+
+        <span th:each="i : ${#numbers.sequence(0, infoPage.totalPages - 1)}">
+            <a th:if="${i != currentPage}" th:href="@{/info(page=${i})}" th:text="${i + 1}" class="action-link"></a>
+            <span th:if="${i == currentPage}" th:text="${i + 1}" style="font-weight:bold; margin:0 4px;"></span>
+        </span>
+
+        <a th:href="@{/info(page=${currentPage + 1})}" th:if="${!infoPage.last}" class="action-link">다음</a>
+        <span th:if="${infoPage.last}" style="color:#ccc;">다음</span>
+    </div>
 </body>
 </html>
