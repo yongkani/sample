@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>정보 상세</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .info-meta {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .info-content {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            min-height: 200px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="${info.title}">제목</h1>
+    
+    <div class="info-meta">
+        작성일: <span th:text="${#temporals.format(info.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-01-01</span>
+    </div>
+    
+    <div class="info-content" th:text="${info.content}">
+        내용
+    </div>
+    
+    <div>
+        <a href="/info" class="btn btn-secondary">목록으로</a>
+        <form th:action="@{/info/{id}/delete(id=${info.id})}" 
+              method="post" 
+              style="display: inline;"
+              onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            <button type="submit" class="btn btn-danger">삭제</button>
+        </form>
+    </div>
+</body>
+</html>
