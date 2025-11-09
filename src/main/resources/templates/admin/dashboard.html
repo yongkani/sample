@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 대시보드</title>
     <style>
         * {
@@ -9,204 +10,334 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f5f5f5;
+            padding: 20px;
         }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header h1 {
-            font-size: 24px;
-        }
-        .logout-btn {
-            background-color: rgba(255,255,255,0.2);
-            color: white;
-            padding: 8px 16px;
-            border: 1px solid white;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .logout-btn:hover {
-            background-color: rgba(255,255,255,0.3);
-        }
+
         .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
-        .stat-card {
+
+        .header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .header-info {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: #f8f8f8;
+            padding: 15px 25px;
+            border-radius: 8px;
+        }
+
+        .stat-box strong {
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .section {
             background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-        .stat-card h3 {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .stat-card .number {
-            color: #667eea;
-            font-size: 32px;
-            font-weight: bold;
-        }
-        .action-bar {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
+
+        .section-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
         .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            text-decoration: none;
             display: inline-block;
-        }
-        .btn-primary {
-            background-color: #667eea;
+            padding: 10px 20px;
+            background-color: #333;
             color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
         }
-        .btn-primary:hover {
-            background-color: #5568d3;
+
+        .btn:hover {
+            background-color: #555;
         }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
         .btn-danger {
             background-color: #dc3545;
-            color: white;
         }
+
         .btn-danger:hover {
             background-color: #c82333;
         }
-        .btn-edit {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-edit:hover {
-            background-color: #218838;
-        }
-        .content-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
-        th {
-            background-color: #f8f9fa;
+
+        th, td {
             padding: 15px;
             text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f8f8;
             font-weight: bold;
             color: #333;
-            border-bottom: 2px solid #dee2e6;
         }
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #dee2e6;
-        }
+
         tr:hover {
-            background-color: #f8f9fa;
+            background-color: #f9f9f9;
         }
-        .actions {
+
+        .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
+
+        .action-btn {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px;
             color: #999;
         }
-        .empty-state-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
+
+        .gallery-thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="header-content">
-            <h1>🎛️ 관리자 대시보드</h1>
-            <form th:action="@{/logout}" method="post" style="display: inline;">
-                <button type="submit" class="logout-btn">로그아웃</button>
-            </form>
-        </div>
-    </div>
-
     <div class="container">
-        <div class="stats">
-            <div class="stat-card">
-                <h3>전체 정보 수</h3>
-                <div class="number" th:text="${totalCount}">0</div>
+        <div class="header">
+            <h1>🔐 관리자 대시보드</h1>
+            <div class="header-info">
+                <div class="stat-box">
+                    <strong>Info 항목:</strong> 
+                    <span th:text="${infoCount}">0</span>개
+                </div>
+                <div class="stat-box">
+                    <strong>Gallery 항목:</strong> 
+                    <span th:text="${galleryCount}">0</span>개
+                </div>
             </div>
         </div>
 
-        <div class="action-bar">
-            <h2>정보 관리</h2>
-            <a href="/admin/info/create" class="btn btn-primary">+ 새 정보 등록</a>
+        <!-- Gallery 섹션 -->
+        <div class="section">
+            <div class="section-header">
+                <h2>📸 Gallery 관리</h2>
+                <a href="/admin/gallery/create" class="btn btn-success">+ 새 갤러리 추가</a>
+            </div>
+
+            <div th:if="${!galleryList.empty}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>이미지</th>
+                            <th>제목</th>
+                            <th>설명</th>
+                            <th>순서</th>
+                            <th>등록일</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="gallery : ${galleryList}">
+                            <td>
+                                <img th:src="${gallery.imageUrl}" 
+                                     class="gallery-thumbnail" 
+                                     alt="thumbnail"
+                                     onerror="this.src='https://via.placeholder.com/60'">
+                            </td>
+                            <td th:text="${gallery.title}">제목</td>
+                            <td>
+                                <span th:text="${#strings.abbreviate(gallery.description, 50)}">설명</span>
+                            </td>
+                            <td th:text="${gallery.displayOrder}">0</td>
+                            <td th:text="${#temporals.format(gallery.createdAt, 'yyyy-MM-dd')}">날짜</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a th:href="@{/admin/gallery/{id}/edit(id=${gallery.id})}" 
+                                       class="action-btn btn-edit">수정</a>
+                                    <form th:action="@{/admin/gallery/{id}/delete(id=${gallery.id})}" 
+                                          method="post" 
+                                          style="display: inline;"
+                                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                        <button type="submit" class="action-btn btn-delete">삭제</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${galleryList.empty}" class="empty-state">
+                <p>등록된 갤러리 항목이 없습니다.</p>
+                <p style="font-size: 0.9rem; color: #ccc; margin-top: 10px;">
+                    위의 버튼을 클릭하여 새 갤러리 항목을 추가하세요.
+                </p>
+            </div>
         </div>
 
-        <div class="content-card">
-            <table th:if="${!#lists.isEmpty(infoList)}">
-                <thead>
-                    <tr>
-                        <th style="width: 80px;">ID</th>
-                        <th>제목</th>
-                        <th style="width: 180px;">작성일</th>
-                        <th style="width: 200px;">작업</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="info : ${infoList}">
-                        <td th:text="${info.id}">1</td>
-                        <td th:text="${info.title}">제목</td>
-                        <td th:text="${#temporals.format(info.createdAt, 'yyyy-MM-dd HH:mm')}">2024-01-01</td>
-                        <td>
-                            <div class="actions">
-                                <a th:href="@{/admin/info/{id}/edit(id=${info.id})}" class="btn btn-edit">수정</a>
-                                <form th:action="@{/admin/info/{id}/delete(id=${info.id})}" 
-                                      method="post" 
-                                      style="display: inline;"
-                                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                                    <button type="submit" class="btn btn-danger">삭제</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div th:if="${#lists.isEmpty(infoList)}" class="empty-state">
-                <div class="empty-state-icon">📭</div>
-                <h3>등록된 정보가 없습니다</h3>
-                <p>새 정보를 등록해보세요!</p>
+        <!-- Info 섹션 -->
+        <div class="section">
+            <div class="section-header">
+                <h2>ℹ️ Info 관리</h2>
+                <a href="/admin/info/create" class="btn btn-success">+ 새 정보 추가</a>
             </div>
+
+            <div th:if="${!infoList.empty}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                            <th>등록일</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="info : ${infoList}">
+                            <td th:text="${info.id}">1</td>
+                            <td th:text="${info.title}">제목</td>
+                            <td>
+                                <span th:text="${#strings.abbreviate(info.content, 50)}">내용</span>
+                            </td>
+                            <td th:text="${#temporals.format(info.createdAt, 'yyyy-MM-dd')}">날짜</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a th:href="@{/admin/info/{id}/edit(id=${info.id})}" 
+                                       class="action-btn btn-edit">수정</a>
+                                    <form th:action="@{/admin/info/{id}/delete(id=${info.id})}" 
+                                          method="post" 
+                                          style="display: inline;"
+                                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                        <button type="submit" class="action-btn btn-delete">삭제</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div th:if="${infoList.empty}" class="empty-state">
+                <p>등록된 정보가 없습니다.</p>
+            </div>
+        </div>
+
+        <!-- 네비게이션 -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/gallery" class="btn" style="margin-right: 10px;">📸 갤러리 보기</a>
+            <a href="/info" class="btn" style="margin-right: 10px;">ℹ️ 정보 보기</a>
+            <a href="/" class="btn">🏠 홈으로</a>
         </div>
     </div>
 </body>

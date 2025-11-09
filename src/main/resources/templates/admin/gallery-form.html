@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>갤러리 등록 - 관리자</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #333;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .helper-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button, .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        button[type="submit"] {
+            background-color: #333;
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ddd;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button, .btn {
+                width: 100%;
+            }
+        }
+    </style>
+    <script>
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📸 갤러리 항목 등록</h1>
+
+        <form action="/admin/gallery/create" method="post" th:action="@{/admin/gallery/create}" enctype="multipart/form-data">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="form-group">
+                <label for="title">제목 *</label>
+                <input type="text" id="title" name="title" required
+                       placeholder="예: 봄맞이 특별 부케">
+            </div>
+
+            <div class="form-group">
+                <label for="imageFile">이미지 파일 *</label>
+                <input type="file" id="imageFile" name="imageFile" required
+                       accept="image/*"
+                       onchange="previewImage(this)">
+                <div class="helper-text">JPG, PNG, GIF 형식의 이미지를 선택하세요.</div>
+                <img id="imagePreview" class="image-preview" alt="이미지 미리보기">
+            </div>
+
+            <div class="form-group">
+                <label for="description">설명</label>
+                <textarea id="description" name="description" 
+                          placeholder="갤러리 항목에 대한 설명을 입력하세요..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="displayOrder">표시 순서</label>
+                <input type="number" id="displayOrder" name="displayOrder" 
+                       value="0" min="0"
+                       placeholder="0">
+                <div class="helper-text">숫자가 작을수록 먼저 표시됩니다.</div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">등록하기</button>
+                <a href="/admin" class="btn btn-secondary">취소</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

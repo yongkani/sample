@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${gallery.title} + ' - Gallery'">Gallery Detail</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            background-color: #fff;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .detail-image {
+            width: 100%;
+            max-height: 600px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+
+        .detail-content {
+            padding: 40px;
+        }
+
+        .detail-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .detail-date {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .detail-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .detail-content {
+                padding: 25px;
+            }
+
+            .detail-title {
+                font-size: 1.5rem;
+            }
+
+            .detail-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>GALLERY DETAIL</h1>
+    </div>
+
+    <div class="container">
+        <a href="/gallery" class="back-button">← 갤러리 목록으로</a>
+
+        <div class="detail-card">
+            <img th:src="${gallery.imageUrl}" 
+                 th:alt="${gallery.title}" 
+                 class="detail-image"
+                 onerror="this.src='https://via.placeholder.com/900x600?text=No+Image'">
+            
+            <div class="detail-content">
+                <h2 class="detail-title" th:text="${gallery.title}">Title</h2>
+                <div class="detail-date" 
+                     th:text="${#temporals.format(gallery.createdAt, 'yyyy년 MM월 dd일')}">Date</div>
+                <div class="detail-description" th:text="${gallery.description}">Description</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
