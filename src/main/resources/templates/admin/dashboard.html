@@ -30,10 +30,33 @@
             margin-bottom: 30px;
         }
 
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
         .header h1 {
             color: #333;
             font-size: 2rem;
-            margin-bottom: 15px;
+            margin: 0;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
         }
 
         .header-info {
@@ -184,6 +207,21 @@
                 padding: 20px;
             }
 
+            .header-top {
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .btn-logout {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+
             .section {
                 padding: 20px;
             }
@@ -214,7 +252,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔐 관리자 대시보드</h1>
+            <div class="header-top">
+                <h1>🔐 관리자 대시보드</h1>
+                <form action="/logout" method="post" style="margin: 0;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="btn-logout">로그아웃</button>
+                </form>
+            </div>
             <div class="header-info">
                 <div class="stat-box">
                     <strong>Info 항목:</strong> 
